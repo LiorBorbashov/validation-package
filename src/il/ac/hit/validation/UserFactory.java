@@ -1,22 +1,8 @@
 package il.ac.hit.validation;
 
-class BasicUser extends User {
-    public BasicUser(String username, String email, String password, int age) {
-        super(username, email, password, age);
-    }
-}
-
-class PremiumUser extends User {
-    public PremiumUser(String username, String email, String password, int age) {
-        super(username, email, password, age);
-    }
-}
-
-class PlatinumUser extends User {
-    public PlatinumUser(String username, String email, String password, int age) {
-        super(username, email, password, age);
-    }
-}
+import il.ac.hit.validation.users.BasicUser;
+import il.ac.hit.validation.users.PlatinumUser;
+import il.ac.hit.validation.users.PremiumUser;
 
 public class UserFactory {
     public static User createUser(String type, String username, String email, String password, int age) {
