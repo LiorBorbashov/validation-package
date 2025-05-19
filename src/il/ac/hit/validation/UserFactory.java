@@ -1,8 +1,8 @@
 package il.ac.hit.validation;
 
-import il.ac.hit.validation.users.BasicUser;
-import il.ac.hit.validation.users.PlatinumUser;
-import il.ac.hit.validation.users.PremiumUser;
+import il.ac.hit.validation.user.types.BasicUser;
+import il.ac.hit.validation.user.types.PlatinumUser;
+import il.ac.hit.validation.user.types.PremiumUser;
 
 public class UserFactory {
     public static User createUser(String type, String username, String email, String password, int age) {

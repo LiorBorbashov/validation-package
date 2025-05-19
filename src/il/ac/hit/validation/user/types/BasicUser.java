@@ -1,4 +1,4 @@
-package il.ac.hit.validation.users;
+package il.ac.hit.validation.user.types;
 
 import il.ac.hit.validation.User;
 
