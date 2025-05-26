@@ -7,10 +7,10 @@ public class User {
     private int age;
 
     public User(String username, String email, String password, int age) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.age = age;
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setAge(age);
     }
 
     public String getUsername() {
