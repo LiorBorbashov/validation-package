@@ -24,6 +24,9 @@ public class UserFactory {
      * @throws IllegalArgumentException if the user type is unknown
      */
     public static User createUser(String type, String username, String email, String password, int age) {
+        if (type == null) {
+            throw new IllegalArgumentException("User type cannot be null");
+        }
         // Convert type to lowercase for case-insensitive support
         switch (type.toLowerCase()) {
             case "basic":
