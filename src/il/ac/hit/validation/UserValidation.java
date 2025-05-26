@@ -112,7 +112,7 @@ public interface UserValidation extends Function<User, ValidationResult> {
      *
      * @return a {@code UserValidation} that checks if the user's email ends with "il".
      */
-    static UserValidation emailEndsWithIl() {
+    static UserValidation emailEndsWithIL() {
         return user -> {
             String email = user.getEmail();
             return email != null && email.endsWith("il")
