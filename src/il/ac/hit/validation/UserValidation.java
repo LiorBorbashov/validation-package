@@ -15,6 +15,10 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a combined {@code UserValidation} that passes only if both validations pass
      */
     default UserValidation and(UserValidation other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other validation must not be null");
+        }
+
         return user -> {
             ValidationResult first = this.apply(user);
             ValidationResult second = other.apply(user);
@@ -41,6 +45,10 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a combined {@code UserValidation} that passes if at least one validation passes
      */
     default UserValidation or(UserValidation other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other validation must not be null");
+        }
+
         return user -> {
             ValidationResult first = this.apply(user);
             if (first.isValid()) {
@@ -64,6 +72,10 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a combined validation
      */
     default UserValidation xor(UserValidation other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other validation must not be null");
+        }
+
         return user -> {
             boolean a = this.apply(user).isValid();
             boolean b = other.apply(user).isValid();
@@ -78,8 +90,16 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a combined {@code UserValidation} that passes if all given validations pass
      */
     static UserValidation all(UserValidation... validations) {
+        if (validations == null) {
+            throw new IllegalArgumentException("Validations must not be null");
+        }
+
         return user -> {
             for (UserValidation validation : validations) {
+                if (validation == null) {
+                    return new Invalid("Validation cannot be null");
+                }
+
                 ValidationResult result = validation.apply(user);
                 if (!result.isValid()) {
                     return result;
@@ -98,6 +118,10 @@ public interface UserValidation extends Function<User, ValidationResult> {
     static UserValidation none(UserValidation... validations) {
         return user -> {
             for (UserValidation validation : validations) {
+                if (validation == null) {
+                    return new Invalid("Validation cannot be null");
+                }
+
                 ValidationResult result = validation.apply(user);
                 if (result.isValid()) {
                     return new Invalid("At least one validation is valid");
@@ -209,9 +233,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the username is longer than 8 characters.
      */
     static UserValidation usernameLengthBiggerThan8() {
-        return user -> user.getUsername() != null && user.getUsername().length() > 8
+        return user -> {
+            String username = user.getUsername();
+            return username != null && username.length() > 8
                     ? new Valid()
                     : new Invalid("Username must be longer than 8 characters");
+        };
     }
 
 }
