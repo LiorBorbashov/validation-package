@@ -1,11 +1,13 @@
 package il.ac.hit.validation;
 
+import java.util.Objects;
+
 /**
  * The {@code User} class represents a user with details
  * such as username, email, password, and age.
  * <p>
  * Provides getters and setters for each field,
- * and overrides {@code toString} to print the user details.
+ * and overrides {@code toString, equals, hashCode}.
  */
 public class User {
     private String username;
@@ -108,5 +110,37 @@ public class User {
     @Override
     public String toString() {
         return "username: " + username + "password: " +password + ", email: " + email + ", age: " + age;
+    }
+
+    /**
+     * Checks if this user is equal to another object.
+     * Two users are considered equal if all fields are equal.
+     *
+     * @param obj the object to compare
+     * @return true if equal; false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // same reference
+        if (this == obj) return true;
+
+        // null or different type
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        User other = (User) obj;
+        return age == other.age &&
+                Objects.equals(username, other.username) &&
+                Objects.equals(email, other.email) &&
+                Objects.equals(password, other.password);
+    }
+
+    /**
+     * Computes the hash code for this user based on all fields.
+     *
+     * @return the hash code
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, email, password, age);
     }
 }
