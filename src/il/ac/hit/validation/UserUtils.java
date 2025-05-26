@@ -18,6 +18,10 @@ public class UserUtils {
             return;
         }
 
+        if (comparator == null) {
+            throw new IllegalArgumentException("Comparator must not be null");
+        }
+
         // Template Method algorithm - bubble sort
         int n = users.length;
         boolean swapped = true;
