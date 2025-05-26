@@ -2,27 +2,44 @@ package il.ac.hit.validation;
 
 import java.util.function.Function;
 
+/**
+ * The {@code UserValidation} interface defines a rule for checking if a {@code User} is valid.
+ * It extends {@code Function<User, ValidationResult>} and includes methods to combine or create rules.
+ */
 public interface UserValidation extends Function<User, ValidationResult> {
+
+    /**
+     * Combines two validations, Both validations must pass for the result to be valid.
+     *
+     * @param other another validation to combine with
+     * @return a combined {@code UserValidation} that passes only if both validations pass
+     */
     default UserValidation and(UserValidation other) {
         return user -> {
             ValidationResult first = this.apply(user);
             ValidationResult second = other.apply(user);
 
-            // if both valid
+            // If both validations are valid
             if (first.isValid() && second.isValid()) {
                 return new Valid();
             }
 
-            // if both invalid
+            // If both are invalid
             if (!first.isValid() && !second.isValid()) {
                 return new Invalid("Both validations failed: " + first.getReason() + " | " + second.getReason());
             }
 
-            // if only one valid
+            // If only one is invalid, return that
             return !first.isValid() ? first : second;
         };
     }
 
+    /**
+     * Combines two validations, Only one validation needs to pass.
+     *
+     * @param other another validation to combine with
+     * @return a combined {@code UserValidation} that passes if at least one validation passes
+     */
     default UserValidation or(UserValidation other) {
         return user -> {
             ValidationResult first = this.apply(user);
@@ -35,11 +52,17 @@ public interface UserValidation extends Function<User, ValidationResult> {
                 return second;
             }
 
-            // If both failed, return custom message
+            // If both are invalid, return combined failure reason
             return new Invalid("Both validations failed: " + first.getReason() + " | " + second.getReason());
         };
     }
 
+    /**
+     * Combines two validations. Exactly one validation must pass.
+     *
+     * @param other another validation to combine with
+     * @return a combined validation
+     */
     default UserValidation xor(UserValidation other) {
         return user -> {
             boolean a = this.apply(user).isValid();
@@ -48,6 +71,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Returns a validation that passes only if all the given validations pass.
+     *
+     * @param validations array of validations
+     * @return a combined {@code UserValidation} that passes if all given validations pass
+     */
     static UserValidation all(UserValidation... validations) {
         return user -> {
             for (UserValidation validation : validations) {
@@ -60,18 +89,29 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Returns a validation that passes only if none of the given validations pass.
+     *
+     * @param validations array of validations
+     * @return a {@code UserValidation} that fails if any given validation passes
+     */
     static UserValidation none(UserValidation... validations) {
         return user -> {
             for (UserValidation validation : validations) {
                 ValidationResult result = validation.apply(user);
                 if (result.isValid()) {
-                    return new Invalid("At least one condition is valid");
+                    return new Invalid("At least one validation is valid");
                 }
             }
             return new Valid();
         };
     }
 
+    /**
+     * Validates that the user's email ends with "il".
+     *
+     * @return a {@code UserValidation} that checks if the user's email ends with "il".
+     */
     static UserValidation emailEndsWithIl() {
         return user -> {
             String email = user.getEmail();
@@ -81,6 +121,11 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Validates that the user's email is longer than 10 characters.
+     *
+     * @return a {@code UserValidation} that checks if the user's email is longer than 10 characters.
+     */
     static UserValidation emailLengthBiggerThan10() {
         return user -> {
             String email = user.getEmail();
@@ -90,6 +135,11 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Validates that the user's password is longer than 8 characters.
+     *
+     * @return a {@code UserValidation} that checks if the user's password is longer than 8 characters.
+     */
     static UserValidation passwordLengthBiggerThan8() {
         return user -> {
             String password = user.getPassword();
@@ -99,6 +149,11 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Validates that the password contains only letters and numbers.
+     *
+     * @return a {@code UserValidation} that checks if the password contains only letters and numbers.
+     */
     static UserValidation passwordIncludesLettersNumbersOnly() {
         return user -> {
             String password = user.getPassword();
@@ -108,6 +163,11 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Validates that the password contains the dollar sign ('$') character.
+     *
+     * @return a {@code UserValidation} that checks if the password contains the dollar sign ('$') character.
+     */
     static UserValidation passwordIncludesDollarSign() {
         return user -> {
             String password = user.getPassword();
@@ -117,6 +177,11 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Validates that the password is different from the username.
+     *
+     * @return a {@code UserValidation} that checks if the password is different from the username.
+     */
     static UserValidation passwordIsDifferentFromUsername() {
         return user -> {
             String username = user.getUsername();
@@ -127,12 +192,22 @@ public interface UserValidation extends Function<User, ValidationResult> {
         };
     }
 
+    /**
+     * Validates that the user's age is greater than 18.
+     *
+     * @return a {@code UserValidation} that checks if the user's age is greater than 18.
+     */
     static UserValidation ageBiggerThan18() {
         return user ->  user.getAge() > 18
                     ? new Valid()
                     : new Invalid("User must be older than 18");
     }
 
+    /**
+     * Validates that the username is longer than 8 characters.
+     *
+     * @return a {@code UserValidation} that checks if the username is longer than 8 characters.
+     */
     static UserValidation usernameLengthBiggerThan8() {
         return user -> user.getUsername() != null && user.getUsername().length() > 8
                     ? new Valid()
