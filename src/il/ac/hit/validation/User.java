@@ -19,9 +19,9 @@ public class User {
      * Constructs a new {@code User} with the specified details.
      *
      * @param username the username of the user
-     * @param email    the email address of the user
+     * @param email the email address of the user
      * @param password the password of the user
-     * @param age      the age of the user
+     * @param age the age of the user
      */
     public User(String username, String email, String password, int age) {
         setUsername(username);
@@ -109,7 +109,7 @@ public class User {
      */
     @Override
     public String toString() {
-        return "username: " + username + "password: " +password + ", email: " + email + ", age: " + age;
+        return "username: " + username + ", password: " +password + ", email: " + email + ", age: " + age;
     }
 
     /**

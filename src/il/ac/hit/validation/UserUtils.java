@@ -12,8 +12,11 @@ public class UserUtils {
      * Sorts an array of {@code User} objects using Bubble Sort.
      * Uses a {@code Comparator<User>} to define the sorting order.
      * Demonstrates the Template Method pattern.
+      * @param users the array of users to sort
+      * @param comparator the comparator used to define the sorting order
      */
     public static void sort(User[] users, Comparator<User> comparator) {
+        // check if the array is null or has one or fewer elements — no need to sort
         if (users == null || users.length <= 1) {
             return;
         }
