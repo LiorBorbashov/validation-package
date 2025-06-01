@@ -13,12 +13,11 @@ public class Invalid implements ValidationResult{
 
     /**
      * Constructs an {@code Invalid} validation result with the given reason.
-     *
-     * @param reason the reason for the validation failure
+     * If the provided reason is null, a default message "Validation failed" will be used.
+     * @param reason the reason for the validation failure, or null to use default message.
      */
     public Invalid(String reason) {
-        this.reason = reason;
-    }
+        this.reason = reason != null ? reason : "Validation failed";}
 
     /**
      * Always returns false because this result means the validation failed.
