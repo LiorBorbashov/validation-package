@@ -172,19 +172,19 @@ public class VideoDemo {
     // Helper methods
     private static void testFunction(String functionName, UserValidation validation, User user) {
         ValidationResult result = validation.apply(user);
-        String status = result.isValid() ? "✅ PASS" : "❌ FAIL";
+        String status = result.isValid() ? "✅ VALID" : "❌ INVALID";
         System.out.println(functionName + ": " + status);
     }
 
     private static void testCombination(String description, UserValidation validation, User user) {
         ValidationResult result = validation.apply(user);
-        String status = result.isValid() ? "✅ PASS" : "❌ FAIL";
+        String status = result.isValid() ? "✅ VALID" : "❌ INVALID";
         System.out.println(description + ": " + status);
     }
 
     private static void printUsers(User[] users) {
         for (User user : users) {
-            System.out.println("  " + user.getUsername() + " (age: " + user.getAge() + ")");
+            System.out.println(user);
         }
     }
 }
