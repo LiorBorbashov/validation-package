@@ -132,20 +132,29 @@ public interface UserValidation extends Function<User, ValidationResult> {
     }
 
     /**
+     * Validation that checks whether the provided {@code User} is not null.
+     *
+     * @return a {@code UserValidation} that returns {@code Invalid} if the user is null,
+     *         otherwise returns {@code Valid}
+     */
+    static UserValidation userNotNull() {
+        return user -> user == null
+                ? new Invalid("User cannot be null")
+                : new Valid();
+    }
+
+    /**
      * Validates that the user's email ends with "il".
      *
      * @return a {@code UserValidation} that checks if the user's email ends with "il".
      */
     static UserValidation emailEndsWithIL() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String email = user.getEmail();
             return email != null && email.endsWith("il")
                     ? new Valid()
                     : new Invalid("Email must end with 'il'");
-        };
+        });
     }
 
     /**
@@ -154,15 +163,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the user's email is longer than 10 characters.
      */
     static UserValidation emailLengthBiggerThan10() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String email = user.getEmail();
             return email != null && email.length() > 10
                     ? new Valid()
                     : new Invalid("Email must be longer than 10 characters");
-        };
+        });
     }
 
     /**
@@ -171,15 +177,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the user's password is longer than 8 characters.
      */
     static UserValidation passwordLengthBiggerThan8() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String password = user.getPassword();
             return password != null && password.length() > 8
                     ? new Valid()
                     : new Invalid("Password must be longer than 8 characters");
-        };
+        });
     }
 
     /**
@@ -188,15 +191,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the password contains only letters and numbers.
      */
     static UserValidation passwordIncludesLettersNumbersOnly() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String password = user.getPassword();
             return password != null && password.matches("[A-Za-z0-9]+")
                     ? new Valid()
                     : new Invalid("Password must include only letters and numbers");
-        };
+        });
     }
 
     /**
@@ -205,15 +205,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the password contains the dollar sign ('$') character.
      */
     static UserValidation passwordIncludesDollarSign() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String password = user.getPassword();
             return password != null && password.contains("$")
                     ? new Valid()
                     : new Invalid("Password must include the $ character");
-        };
+        });
     }
 
     /**
@@ -222,16 +219,13 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the password is different from the username.
      */
     static UserValidation passwordIsDifferentFromUsername() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String username = user.getUsername();
             String password = user.getPassword();
             return username != null && password != null && !username.equals(password)
                     ? new Valid()
                     : new Invalid("Password must be different from username");
-        };
+        });
     }
 
     /**
@@ -240,14 +234,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the user's age is greater than 18.
      */
     static UserValidation ageBiggerThan18() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
-            return user.getAge() > 18
-                    ? new Valid()
-                    : new Invalid("User must be older than 18");
-        };
+        return userNotNull().and(user -> user.getAge() > 18
+                ? new Valid()
+                : new Invalid("User must be older than 18"));
     }
 
     /**
@@ -256,15 +245,12 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the username is longer than 8 characters.
      */
     static UserValidation usernameLengthBiggerThan8() {
-        return user -> {
-            if (user == null) {
-                return new Invalid("User cannot be null");
-            }
+        return userNotNull().and(user -> {
             String username = user.getUsername();
             return username != null && username.length() > 8
                     ? new Valid()
                     : new Invalid("Username must be longer than 8 characters");
-        };
+        });
     }
 
 }
