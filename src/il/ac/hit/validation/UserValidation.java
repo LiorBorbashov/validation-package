@@ -138,6 +138,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation emailEndsWithIL() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String email = user.getEmail();
             return email != null && email.endsWith("il")
                     ? new Valid()
@@ -152,6 +155,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation emailLengthBiggerThan10() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String email = user.getEmail();
             return email != null && email.length() > 10
                     ? new Valid()
@@ -166,6 +172,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation passwordLengthBiggerThan8() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String password = user.getPassword();
             return password != null && password.length() > 8
                     ? new Valid()
@@ -180,6 +189,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation passwordIncludesLettersNumbersOnly() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String password = user.getPassword();
             return password != null && password.matches("[A-Za-z0-9]+")
                     ? new Valid()
@@ -194,6 +206,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation passwordIncludesDollarSign() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String password = user.getPassword();
             return password != null && password.contains("$")
                     ? new Valid()
@@ -208,6 +223,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation passwordIsDifferentFromUsername() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String username = user.getUsername();
             String password = user.getPassword();
             return username != null && password != null && !username.equals(password)
@@ -222,9 +240,14 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that checks if the user's age is greater than 18.
      */
     static UserValidation ageBiggerThan18() {
-        return user ->  user.getAge() > 18
-                ? new Valid()
-                : new Invalid("User must be older than 18");
+        return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
+            return user.getAge() > 18
+                    ? new Valid()
+                    : new Invalid("User must be older than 18");
+        };
     }
 
     /**
@@ -234,6 +257,9 @@ public interface UserValidation extends Function<User, ValidationResult> {
      */
     static UserValidation usernameLengthBiggerThan8() {
         return user -> {
+            if (user == null) {
+                return new Invalid("User cannot be null");
+            }
             String username = user.getUsername();
             return username != null && username.length() > 8
                     ? new Valid()

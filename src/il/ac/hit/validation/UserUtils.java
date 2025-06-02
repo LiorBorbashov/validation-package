@@ -25,6 +25,13 @@ public class UserUtils {
             throw new IllegalArgumentException("Comparator must not be null");
         }
 
+        // Check for null elements in the array
+        for (User user : users) {
+            if (user == null) {
+                throw new IllegalArgumentException("Array cannot contain null users");
+            }
+        }
+
         // Template Method algorithm - bubble sort
         int n = users.length;
         boolean swapped = true;
