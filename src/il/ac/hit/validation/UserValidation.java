@@ -21,20 +21,11 @@ public interface UserValidation extends Function<User, ValidationResult> {
 
         return user -> {
             ValidationResult first = this.apply(user);
-            ValidationResult second = other.apply(user);
-
-            // If both validations are valid
-            if (first.isValid() && second.isValid()) {
-                return new Valid();
+            if (!first.isValid()) {
+                return first;
             }
 
-            // If both are invalid
-            if (!first.isValid() && !second.isValid()) {
-                return new Invalid("Both validations failed: " + first.getReason() + " | " + second.getReason());
-            }
-
-            // If only one is invalid, return that
-            return !first.isValid() ? first : second;
+            return other.apply(user);
         };
     }
 
