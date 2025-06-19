@@ -107,6 +107,10 @@ public interface UserValidation extends Function<User, ValidationResult> {
      * @return a {@code UserValidation} that fails if any given validation passes
      */
     static UserValidation none(UserValidation... validations) {
+        if (validations == null) {
+            throw new IllegalArgumentException("Validations must not be null");
+        }
+
         return user -> {
             for (UserValidation validation : validations) {
                 if (validation == null) {
